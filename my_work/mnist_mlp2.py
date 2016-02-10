@@ -52,9 +52,9 @@ model.add(Activation('relu'))
 model.add(Dropout(0.5))
 
 model.add(Dense(200))
-model.add(Dropout(0.5))
+model.add(Dropout(0.2))
 model.add(Activation('softmax'))
-model.add(LinDense(10, dropout_rate=0.5))
+model.add(LinDense(10, dropout_rate=0.2))
 
 sgd = SGD(lr=0.01, decay=1e-6, momentum=0.95, nesterov=True)
 model.compile(loss='categorical_crossentropy', optimizer=sgd)
