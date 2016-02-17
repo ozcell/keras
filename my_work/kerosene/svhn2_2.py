@@ -31,8 +31,8 @@ from keras.optimizers import SGD, Adadelta, Adagrad
 '''
 
 batch_size = 128
-nb_classes = 11
-nb_epoch = 1
+nb_classes = 10
+nb_epoch = 300
 
 if "USE_EXTRA" not in os.environ:
     # standard split is 73,257 train / 26,032 test
@@ -42,6 +42,9 @@ else:
     (X_train, y_train), (X_extra, y_extra), (X_test, y_test) = svhn2.load_data(sets=['train', 'extra', 'test'])
     X_train = np.concatenate([X_train, X_extra])
     y_train = np.concatenate([y_train, y_extra])
+
+y_train = y_train%10
+y_test = y_test%10
 
 # print shape of data while model is building
 print("{1} train samples, {2} channel{0}, {3}x{4}".format("" if X_train.shape[1] == 1 else "s", *X_train.shape))
