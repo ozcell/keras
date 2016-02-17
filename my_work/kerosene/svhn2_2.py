@@ -32,7 +32,7 @@ from keras.optimizers import SGD, Adadelta, Adagrad
 
 batch_size = 128
 nb_classes = 11
-nb_epoch = 20
+nb_epoch = 1
 
 if "USE_EXTRA" not in os.environ:
     # standard split is 73,257 train / 26,032 test
