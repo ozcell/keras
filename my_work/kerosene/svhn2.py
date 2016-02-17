@@ -30,7 +30,7 @@ from keras.optimizers import SGD, Adadelta, Adagrad
 '''
 
 batch_size = 128
-nb_classes = 10
+nb_classes = 11
 nb_epoch = 100
 
 if "USE_EXTRA" not in os.environ:
