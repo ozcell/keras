@@ -30,8 +30,8 @@ from keras.optimizers import SGD, Adadelta, Adagrad
 '''
 
 batch_size = 128
-nb_classes = 11
-nb_epoch = 12
+nb_classes = 10
+nb_epoch = 100
 
 if "USE_EXTRA" not in os.environ:
     # standard split is 73,257 train / 26,032 test
@@ -71,17 +71,22 @@ model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(0.25))
 
 model.add(Flatten())
-model.add(Dense(512))
+model.add(Dense(1024))
 model.add(Activation('relu'))
 model.add(Dropout(0.5))
 model.add(Dense(nb_classes))
 model.add(Activation('softmax'))
 
 # let's train the model using SGD + momentum (how original).
-sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
+sgd = SGD(lr=0.01, decay=1e-6, momentum=0.95, nesterov=True)
 model.compile(loss='categorical_crossentropy', optimizer=sgd)
 
-model.fit(X_train, Y_train, batch_size=batch_size, nb_epoch=nb_epoch, show_accuracy=True, verbose=1, validation_data=(X_test, Y_test))
+model.fit(X_train, Y_train, batch_size=batch_size, nb_epoch=nb_epoch,
+          show_accuracy=True, verbose=2, validation_data=(X_test, Y_test))
+
 score = model.evaluate(X_test, Y_test, show_accuracy=True, verbose=0)
+
+model.save_weights('weights_svhn_cnn_1024_10_sgd.h5', overwrite=True)
+
 print('Test score:', score[0])
 print('Test accuracy:', score[1])
