@@ -11,13 +11,14 @@ from six.moves import zip
 from .. import backend as K
 from .. import activations, initializations, initializations_scol, regularizers, constraints
 from ..regularizers import ActivityRegularizer
+from ..layers.core import Layer
 
 import marshal
 import types
 import sys
 
 
-class LinDense(keras.layers.core.Layer):
+class LinDense(Layer):
     '''Just your regular fully connected NN layer.
 
     # Input shape
