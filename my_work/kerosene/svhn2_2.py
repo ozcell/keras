@@ -32,7 +32,7 @@ from keras.optimizers import SGD, Adadelta, Adagrad
 
 batch_size = 128
 nb_classes = 10
-nb_epoch = 300
+nb_epoch = 50
 
 # standard split is 73,257 train / 26,032 test
 (X_train, y_train), (X_test, y_test) = svhn2.load_data()
