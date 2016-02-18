@@ -12,6 +12,7 @@ from keras.layers.scol import LinDense
 from keras.layers.convolutional import Convolution2D, MaxPooling2D
 from keras.utils import np_utils
 from keras.optimizers import SGD, Adadelta, Adagrad
+from keras.constraints import maxnorm
 
 '''
     Train a convnet on the cropped Stanford Street View House Numbers dataset.
