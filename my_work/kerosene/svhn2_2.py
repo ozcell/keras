@@ -77,7 +77,7 @@ model.compile(loss='categorical_crossentropy', optimizer=sgd)
 
 if "USE_EXTRA" in os.environ:
     # svhn2 extra split has an additional 531,131 (!) examples
-    (X_extra, y_extra), (X_test, y_test) = svhn2.load_data(sets=['extra'])
+    (X_extra, y_extra) = svhn2.load_data(sets=['extra'])
     X_train = np.concatenate([X_train, X_extra])
     y_train = np.concatenate([y_train, y_extra])
 
