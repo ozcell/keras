@@ -34,17 +34,8 @@ batch_size = 128
 nb_classes = 10
 nb_epoch = 300
 
-if "USE_EXTRA" not in os.environ:
-    # standard split is 73,257 train / 26,032 test
-    (X_train, y_train), (X_test, y_test) = svhn2.load_data()
-else:
-    # svhn2 extra split has an additional 531,131 (!) examples
-    (X_train, y_train), (X_extra, y_extra), (X_test, y_test) = svhn2.load_data(sets=['train', 'extra', 'test'])
-    X_train = np.concatenate([X_train, X_extra])
-    y_train = np.concatenate([y_train, y_extra])
-
-y_train = y_train%10
-y_test = y_test%10
+# standard split is 73,257 train / 26,032 test
+(X_train, y_train), (X_test, y_test) = svhn2.load_data()
 
 # print shape of data while model is building
 print("{1} train samples, {2} channel{0}, {3}x{4}".format("" if X_train.shape[1] == 1 else "s", *X_train.shape))
@@ -52,10 +43,6 @@ print("{1}  test samples, {2} channel{0}, {3}x{4}".format("" if X_test.shape[1] 
 
 # input image dimensions
 _, img_channels, img_rows, img_cols = X_train.shape
-
-# convert class vectors to binary class matrices
-Y_train = np_utils.to_categorical(y_train, nb_classes)
-Y_test = np_utils.to_categorical(y_test, nb_classes)
 
 model = Sequential()
 
@@ -78,6 +65,7 @@ model.add(Flatten())
 model.add(Dense(1024))
 model.add(Activation('relu'))
 model.add(Dropout(0.5))
+
 model.add(Dense(nb_classes*10))
 model.add(Dropout(0.5))
 model.add(Activation('softmax'))
@@ -86,6 +74,25 @@ model.add(LinDense(nb_classes, dropout_rate=0.5))
 # let's train the model using SGD + momentum (how original).
 sgd = SGD(lr=0.01, decay=1e-6, momentum=0.95, nesterov=True)
 model.compile(loss='categorical_crossentropy', optimizer=sgd)
+
+if "USE_EXTRA" not in os.environ:
+    # standard split is 73,257 train / 26,032 test
+else:
+    # svhn2 extra split has an additional 531,131 (!) examples
+    (X_extra, y_extra), (X_test, y_test) = svhn2.load_data(sets=['extra'])
+    X_train = np.concatenate([X_train, X_extra])
+    y_train = np.concatenate([y_train, y_extra])
+
+y_train = y_train%10
+y_test = y_test%10
+
+# print shape of data while model is building
+print("{1} train samples, {2} channel{0}, {3}x{4}".format("" if X_train.shape[1] == 1 else "s", *X_train.shape))
+print("{1}  test samples, {2} channel{0}, {3}x{4}".format("" if X_test.shape[1] == 1 else "s", *X_test.shape))
+
+# convert class vectors to binary class matrices
+Y_train = np_utils.to_categorical(y_train, nb_classes)
+Y_test = np_utils.to_categorical(y_test, nb_classes)
 
 model.fit(X_train, Y_train, batch_size=batch_size, nb_epoch=nb_epoch,
           show_accuracy=True, verbose=2, validation_data=(X_test, Y_test))
