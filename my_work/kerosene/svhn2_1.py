@@ -46,9 +46,8 @@ print("{1}  test samples, {2} channel{0}, {3}x{4}".format("" if X_test.shape[1] 
 _, img_channels, img_rows, img_cols = X_train.shape
 
 model = Sequential()
-model.add(Dropout(0.1))
+model.add(Dropout(0.1, input_shape=(img_channels, img_rows, img_cols)))
 model.add(Convolution2D(96, 5, 5, border_mode='valid',
-                        input_shape=(img_channels, img_rows, img_cols),
                         W_constraint=maxnorm(4)))
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(3, 3), subsample=(2,2)))
