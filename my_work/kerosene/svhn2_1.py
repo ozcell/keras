@@ -78,7 +78,7 @@ model.add(Activation('softmax'))
 #model.add(LinDense(nb_classes, dropout_rate=0.5))
 
 # let's train the model using SGD + momentum (how original).
-sgd = SGD(lr=0.01, decay=1e-6, momentum=0.95, nesterov=True)
+sgd = SGD(lr=0.003, decay=1e-6, momentum=0.95, nesterov=True)
 model.compile(loss='categorical_crossentropy', optimizer=sgd)
 
 if "USE_EXTRA" in os.environ:
