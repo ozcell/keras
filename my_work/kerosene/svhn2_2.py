@@ -75,9 +75,7 @@ model.add(LinDense(nb_classes, dropout_rate=0.5))
 sgd = SGD(lr=0.01, decay=1e-6, momentum=0.95, nesterov=True)
 model.compile(loss='categorical_crossentropy', optimizer=sgd)
 
-if "USE_EXTRA" not in os.environ:
-    # standard split is 73,257 train / 26,032 test
-else:
+if "USE_EXTRA" in os.environ:
     # svhn2 extra split has an additional 531,131 (!) examples
     (X_extra, y_extra), (X_test, y_test) = svhn2.load_data(sets=['extra'])
     X_train = np.concatenate([X_train, X_extra])
