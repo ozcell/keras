@@ -47,18 +47,18 @@ _, img_channels, img_rows, img_cols = X_train.shape
 
 model = Sequential()
 model.add(Dropout(0.1, input_shape=(img_channels, img_rows, img_cols)))
-model.add(Convolution2D(96, 5, 5, border_mode='valid',
+model.add(Convolution2D(96, 5, 5, border_mode='same',
                         W_constraint=maxnorm(4)))
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(3, 3), strides=(2,2)))
 model.add(Dropout(0.25))
 
-model.add(Convolution2D(128, 5, 5, W_constraint=maxnorm(4)))
+model.add(Convolution2D(128, 5, 5, border_mode='same', W_constraint=maxnorm(4)))
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(3, 3), strides=(2,2)))
 model.add(Dropout(0.25))
 
-model.add(Convolution2D(256, 5, 5, W_constraint=maxnorm(4)))
+model.add(Convolution2D(256, 5, 5, border_mode='same', W_constraint=maxnorm(4)))
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(3, 3), strides=(2,2)))
 model.add(Dropout(0.5))
