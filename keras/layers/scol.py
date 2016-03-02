@@ -57,7 +57,7 @@ class LinDense(Layer):
     '''
     input_ndim = 2
 
-    def __init__(self, output_dim, dropout_rate=1, init='identity_vstacked', activation='linear', weights=None,
+    def __init__(self, output_dim, dropout_rate=0, init='identity_vstacked', activation='linear', weights=None,
                  input_dim=None, **kwargs):
 
         self.init = initializations_scol.get(init)
