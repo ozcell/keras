@@ -113,6 +113,9 @@ def plot_side_by_side(dictionary):
 
 def mnist_dataset_size(nb_weight_updates=120000):
 
+    results = []
+    i=0
+
     for dataset_size in [100, 500, 1000, 5000, 10000, 30000, 60000]:
         nb_epoch = nb_weight_updates/(dataset_size/batch_size)
 
@@ -138,11 +141,26 @@ def mnist_dataset_size(nb_weight_updates=120000):
                    show_accuracy=True, verbose=2,
                    validation_data=(X_test, Y_test))
 
-        f = gzip.open('histories.gz', 'wb')
-        cPickle.dump(history1, f, protocol=cPickle.HIGHEST_PROTOCOL)
-        cPickle.dump(history2, f, protocol=cPickle.HIGHEST_PROTOCOL)
-        cPickle.dump(history3, f, protocol=cPickle.HIGHEST_PROTOCOL)
-        f.close()
+    results.append([])
+    results[i].append(np.asarray(history1.history.get('loss')))
+    results[i].append(np.asarray(history1.history.get('val_loss')))
+    results[i].append(np.asarray(history1.history.get('acc')))
+    results[i].append(np.asarray(history1.history.get('val_acc')))
+
+    results[i].append(np.asarray(history2.history.get('loss')))
+    results[i].append(np.asarray(history2.history.get('val_loss')))
+    results[i].append(np.asarray(history2.history.get('acc')))
+    results[i].append(np.asarray(history2.history.get('val_acc')))
+
+    results[i].append(np.asarray(history3.history.get('loss')))
+    results[i].append(np.asarray(history3.history.get('val_loss')))
+    results[i].append(np.asarray(history3.history.get('acc')))
+    results[i].append(np.asarray(history3.history.get('val_acc')))
+    i=i+1
 
 X_train, Y_train, X_test, Y_test, nb_classes = set_dataset('MNIST')
 mnist_dataset_size(int(sys.argv[1]))
+
+f = open('histories.pkl', 'wb')
+cPickle.dump(results, f, protocol=cPickle.HIGHEST_PROTOCOL)
+f.close()
