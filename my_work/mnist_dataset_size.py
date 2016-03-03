@@ -141,25 +141,28 @@ def mnist_dataset_size(nb_weight_updates=120000):
                    show_accuracy=True, verbose=2,
                    validation_data=(X_test, Y_test))
 
-    results.append([])
-    results[i].append(np.asarray(history1.history.get('loss')))
-    results[i].append(np.asarray(history1.history.get('val_loss')))
-    results[i].append(np.asarray(history1.history.get('acc')))
-    results[i].append(np.asarray(history1.history.get('val_acc')))
+        results.append([])
+        results[i].append(np.asarray(history1.history.get('loss')))
+        results[i].append(np.asarray(history1.history.get('val_loss')))
+        results[i].append(np.asarray(history1.history.get('acc')))
+        results[i].append(np.asarray(history1.history.get('val_acc')))
 
-    results[i].append(np.asarray(history2.history.get('loss')))
-    results[i].append(np.asarray(history2.history.get('val_loss')))
-    results[i].append(np.asarray(history2.history.get('acc')))
-    results[i].append(np.asarray(history2.history.get('val_acc')))
+        results[i].append(np.asarray(history2.history.get('loss')))
+        results[i].append(np.asarray(history2.history.get('val_loss')))
+        results[i].append(np.asarray(history2.history.get('acc')))
+        results[i].append(np.asarray(history2.history.get('val_acc')))
 
-    results[i].append(np.asarray(history3.history.get('loss')))
-    results[i].append(np.asarray(history3.history.get('val_loss')))
-    results[i].append(np.asarray(history3.history.get('acc')))
-    results[i].append(np.asarray(history3.history.get('val_acc')))
-    i=i+1
+        results[i].append(np.asarray(history3.history.get('loss')))
+        results[i].append(np.asarray(history3.history.get('val_loss')))
+        results[i].append(np.asarray(history3.history.get('acc')))
+        results[i].append(np.asarray(history3.history.get('val_acc')))
+
+        i=i+1
+
+    return results
 
 X_train, Y_train, X_test, Y_test, nb_classes = set_dataset('MNIST')
-mnist_dataset_size(int(sys.argv[1]))
+results = mnist_dataset_size(int(sys.argv[1]))
 
 f = open('histories.pkl', 'wb')
 cPickle.dump(results, f, protocol=cPickle.HIGHEST_PROTOCOL)
