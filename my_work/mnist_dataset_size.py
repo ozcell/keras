@@ -1,4 +1,4 @@
-def mnist_dataset_size(mnist_dataset_size=120000):
+def mnist_dataset_size(nb_weight_updates=120000):
     # coding: utf-8
 
     '''Train a simple deep NN on the MNIST dataset of varying sizes.
