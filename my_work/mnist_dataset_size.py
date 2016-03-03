@@ -22,7 +22,7 @@ import matplotlib.pyplot as plot
 import matplotlib.cm as cm
 import sys
 
-from six.moves import cPickle
+from six.moves import cPickle gzip
 
 #%matplotlib inline
 
