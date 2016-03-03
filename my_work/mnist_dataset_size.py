@@ -125,6 +125,12 @@ def mnist_dataset_size(nb_weight_updates=120000):
                                         True, 10, 0)
         model3 = define_single_layer_mlp((X_train.shape[1], ), 0, 1, 256, 0, None,
                                         True, 10, 0.5)
+        model4 = define_single_layer_mlp((X_train.shape[1], ), 0.2, 1, 256, 0.5, maxnorm(2),
+                                        False)
+        model5 = define_single_layer_mlp((X_train.shape[1], ), 0.2, 1, 256, 0.5, maxnorm(2),
+                                        True, 10, 0)
+        model6 = define_single_layer_mlp((X_train.shape[1], ), 0.2, 1, 256, 0.5, maxnorm(2),
+                                        True, 10, 0.5)
 
         history1 = model1.fit(X_train[0:dataset_size,:], Y_train[0:dataset_size,:],
                    batch_size=batch_size, nb_epoch=nb_epoch,
@@ -137,6 +143,21 @@ def mnist_dataset_size(nb_weight_updates=120000):
                    validation_data=(X_test, Y_test))
 
         history3 = model3.fit(X_train[0:dataset_size,:], Y_train[0:dataset_size,:],
+                   batch_size=batch_size, nb_epoch=nb_epoch,
+                   show_accuracy=True, verbose=2,
+                   validation_data=(X_test, Y_test))
+
+        history4 = model4.fit(X_train[0:dataset_size,:], Y_train[0:dataset_size,:],
+                   batch_size=batch_size, nb_epoch=nb_epoch,
+                   show_accuracy=True, verbose=2,
+                   validation_data=(X_test, Y_test))
+
+        history5 = model5.fit(X_train[0:dataset_size,:], Y_train[0:dataset_size,:],
+                   batch_size=batch_size, nb_epoch=nb_epoch,
+                   show_accuracy=True, verbose=2,
+                   validation_data=(X_test, Y_test))
+
+        history6 = model6.fit(X_train[0:dataset_size,:], Y_train[0:dataset_size,:],
                    batch_size=batch_size, nb_epoch=nb_epoch,
                    show_accuracy=True, verbose=2,
                    validation_data=(X_test, Y_test))
@@ -156,6 +177,21 @@ def mnist_dataset_size(nb_weight_updates=120000):
         results[i].append(np.asarray(history3.history.get('val_loss')))
         results[i].append(np.asarray(history3.history.get('acc')))
         results[i].append(np.asarray(history3.history.get('val_acc')))
+
+        results[i].append(np.asarray(history4.history.get('loss')))
+        results[i].append(np.asarray(history4.history.get('val_loss')))
+        results[i].append(np.asarray(history4.history.get('acc')))
+        results[i].append(np.asarray(history4.history.get('val_acc')))
+
+        results[i].append(np.asarray(history5.history.get('loss')))
+        results[i].append(np.asarray(history5.history.get('val_loss')))
+        results[i].append(np.asarray(history5.history.get('acc')))
+        results[i].append(np.asarray(history5.history.get('val_acc')))
+
+        results[i].append(np.asarray(history6.history.get('loss')))
+        results[i].append(np.asarray(history6.history.get('val_loss')))
+        results[i].append(np.asarray(history6.history.get('acc')))
+        results[i].append(np.asarray(history6.history.get('val_acc')))
 
         i=i+1
 
