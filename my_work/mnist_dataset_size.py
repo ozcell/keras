@@ -137,7 +137,7 @@ def mnist_dataset_size(nb_weight_updates=120000):
                    show_accuracy=True, verbose=2,
                    validation_data=(X_test, Y_test))
 
-        f = open('histories.save', 'wb')
+        f = gzip.open('histories.gz', 'wb')
         cPickle.dump(history1, f, protocol=cPickle.HIGHEST_PROTOCOL)
         cPickle.dump(history2, f, protocol=cPickle.HIGHEST_PROTOCOL)
         cPickle.dump(history3, f, protocol=cPickle.HIGHEST_PROTOCOL)
