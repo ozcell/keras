@@ -19,9 +19,9 @@ from keras.constraints import maxnorm
 
 import scipy.io
 
-batch_size = 2000
+batch_size = 100
 nb_classes = 10
-nb_epoch = 1000
+nb_epoch = 3334
 
 # the data, shuffled and split between tran and test sets
 (X_train, y_train), (X_test, y_test) = mnist.load_data()
@@ -51,7 +51,7 @@ model.add(Dense(2048, W_constraint=maxnorm(2)))
 model.add(Activation('relu'))
 model.add(Dropout(0.5))
 
-model.add(Dense(200))
+model.add(Dense(10))
 model.add(Dropout(0.2))
 model.add(Activation('softmax'))
 model.add(LinDense(10, dropout_rate=0.2))
