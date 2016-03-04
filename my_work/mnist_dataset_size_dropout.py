@@ -117,13 +117,13 @@ def mnist_dataset_size(nb_weight_updates=120000):
     i=0
 
     for dataset_size in [100, 500, 1000, 5000, 10000, 30000, 60000]:
-        nb_epoch = nb_weight_updates/(dataset_size/batch_size)
+        nb_epoch = 2000#nb_weight_updates/(dataset_size/batch_size)
 
-        model1 = define_single_layer_mlp((X_train.shape[1], ), 0.2, 1, 256, 0.5, maxnorm(2),
+        model1 = define_single_layer_mlp((X_train.shape[1], ), 0.2, 1, 1024, 0.5, maxnorm(2),
                                         False)
-        model2 = define_single_layer_mlp((X_train.shape[1], ), 0.2, 1, 256, 0.5, maxnorm(2),
+        model2 = define_single_layer_mlp((X_train.shape[1], ), 0.2, 1, 1024, 0.5, maxnorm(2),
                                         True, 10, 0)
-        model3 = define_single_layer_mlp((X_train.shape[1], ), 0.2, 1, 256, 0.5, maxnorm(2),
+        model3 = define_single_layer_mlp((X_train.shape[1], ), 0.2, 1, 1024, 0.5, maxnorm(2),
                                         True, 10, 0.5)
 
         history1 = model1.fit(X_train[0:dataset_size,:], Y_train[0:dataset_size,:],
