@@ -119,11 +119,11 @@ def mnist_dataset_size(nb_weight_updates=120000):
     for dataset_size in [100, 500, 1000, 5000, 10000, 30000, 60000]:
         nb_epoch = [40000, 10000, 10000, 1000, 1000, 2000, 1000]#nb_weight_updates/(dataset_size/batch_size)
 
-        model1 = define_single_layer_mlp((X_train.shape[1], ), 0.2, 1, 1024, 0.5, maxnorm(2),
+        model1 = define_single_layer_mlp((X_train.shape[1], ), 0.2, 1, 256, 0.5, maxnorm(2),
                                         False)
-        model2 = define_single_layer_mlp((X_train.shape[1], ), 0.2, 1, 1024, 0.5, maxnorm(2),
+        model2 = define_single_layer_mlp((X_train.shape[1], ), 0.2, 1, 256, 0.5, maxnorm(2),
                                         True, 10, 0)
-        model3 = define_single_layer_mlp((X_train.shape[1], ), 0.2, 1, 1024, 0.5, maxnorm(2),
+        model3 = define_single_layer_mlp((X_train.shape[1], ), 0.2, 1, 256, 0.5, maxnorm(2),
                                         True, 10, 0.5)
 
         history1 = model1.fit(X_train[0:dataset_size,:], Y_train[0:dataset_size,:],
@@ -164,6 +164,6 @@ def mnist_dataset_size(nb_weight_updates=120000):
 X_train, Y_train, X_test, Y_test, nb_classes = set_dataset('MNIST')
 results = mnist_dataset_size(int(sys.argv[1]))
 
-f = open('histories_1024_2.pkl', 'wb')
+f = open('histories_256_2.pkl', 'wb')
 cPickle.dump(results, f, protocol=cPickle.HIGHEST_PROTOCOL)
 f.close()
