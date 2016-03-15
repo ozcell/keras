@@ -18,7 +18,7 @@ import types
 import sys
 
 
-class LinDense2(Layer):
+class LinDense(Layer):
     '''Just your regular fully connected NN layer.
 
     # Input shape
@@ -70,7 +70,7 @@ class LinDense2(Layer):
         if self.input_dim:
             kwargs['input_shape'] = (self.input_dim,)
         self.input = K.placeholder(ndim=2)
-        super(LinDense2, self).__init__(**kwargs)
+        super(LinDense, self).__init__(**kwargs)
 
     def build(self):
         input_dim = self.input_shape[1]
@@ -95,5 +95,5 @@ class LinDense2(Layer):
                   'init': self.init.__name__,
                   'activation': self.activation.__name__,
                   'input_dim': self.input_dim}
-        base_config = super(LinDense2, self).get_config()
+        base_config = super(LinDense, self).get_config()
         return dict(list(base_config.items()) + list(config.items()))

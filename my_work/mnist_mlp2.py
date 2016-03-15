@@ -12,7 +12,7 @@ np.random.seed(1337)  # for reproducibility
 from keras.datasets import mnist
 from keras.models import Sequential
 from keras.layers.core import Dense, Dropout, Activation
-from keras.layers.scol import LinDense2
+from keras.layers.scol import LinDense
 from keras.optimizers import SGD, Adam, RMSprop
 from keras.utils import np_utils
 from keras.constraints import maxnorm
@@ -54,7 +54,7 @@ model.add(Dropout(0.5))
 model.add(Dense(100))
 model.add(Dropout(0.5))
 model.add(Activation('softmax'))
-model.add(LinDense2(10))
+model.add(LinDense(10))
 
 sgd = SGD(lr=0.01, decay=1e-6, momentum=0.95, nesterov=True)
 model.compile(loss='categorical_crossentropy', optimizer=sgd)
