@@ -18,7 +18,7 @@ import types
 import sys
 
 
-class LinDense(Layer):
+class LinDense2(Layer):
     '''Just your regular fully connected NN layer.
 
     # Input shape
