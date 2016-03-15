@@ -75,7 +75,7 @@ class LinDense(Layer):
     def build(self):
         input_dim = self.input_shape[1]
 
-        self.W = self.init((input_dim, self.output_dim))*2
+        self.W = self.init((input_dim, self.output_dim))
         self.b = K.zeros((self.output_dim,))
         self.params = [self.W, self.b]
         self.trainable = False
