@@ -57,12 +57,13 @@ class LinDense(Layer):
     '''
     input_ndim = 2
 
-    def __init__(self, output_dim, init='identity_vstacked', activation='linear', weights=None,
+    def __init__(self, output_dim, dropout_rate=0, init='identity_vstacked', activation='linear', weights=None,
                  input_dim=None, **kwargs):
 
         self.init = initializations_scol.get(init)
         self.activation = activations.get(activation)
         self.output_dim = output_dim
+        self.dropout_rate = dropout_rate
 
         self.initial_weights = weights
 
@@ -75,7 +76,7 @@ class LinDense(Layer):
     def build(self):
         input_dim = self.input_shape[1]
 
-        self.W = self.init((input_dim, self.output_dim))
+        self.W = self.init((input_dim, self.output_dim))*(1/1-self.dropout_rate)
         self.b = K.zeros((self.output_dim,))
         self.params = [self.W, self.b]
         self.trainable = False
@@ -94,6 +95,7 @@ class LinDense(Layer):
                   'output_dim': self.output_dim,
                   'init': self.init.__name__,
                   'activation': self.activation.__name__,
-                  'input_dim': self.input_dim}
+                  'input_dim': self.input_dim,
+		  'dropout_rate': self.dropout_rate}
         base_config = super(LinDense, self).get_config()
         return dict(list(base_config.items()) + list(config.items()))
