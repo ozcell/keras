@@ -77,7 +77,7 @@ class LinDense(Layer):
 
         self.W = self.init((input_dim, self.output_dim))
         self.b = K.zeros((self.output_dim,))
-        self.params = [self.W, self.b]
+        self.non_trainable_weights = [self.W, self.b]
         self.trainable = False
 
     @property
