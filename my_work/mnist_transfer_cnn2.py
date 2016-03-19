@@ -22,9 +22,9 @@ from keras.models import Sequential
 from keras.layers.core import Dense, Dropout, Activation, Flatten
 from keras.layers.convolutional import Convolution2D, MaxPooling2D
 from keras.utils import np_utils
+from keras.layers.scol import LinDense
 from keras.optimizers import SGD
 from keras.constraints import maxnorm
-
 
 now = datetime.datetime.now
 
@@ -57,7 +57,8 @@ def train_model(model, train, test, nb_classes):
     Y_train = np_utils.to_categorical(train[1], nb_classes)
     Y_test = np_utils.to_categorical(test[1], nb_classes)
 
-    model.compile(loss='categorical_crossentropy', optimizer='adadelta')
+    sgd = SGD(lr=0.01, decay=1e-6, momentum=0.95, nesterov=True)
+    model.compile(loss='categorical_crossentropy', optimizer=sgd)
 
     t = now()
     model.fit(X_train, Y_train,
@@ -100,8 +101,9 @@ classification_layers = [
     Dense(1024, W_constraint=maxnorm(2)),
     Activation('relu'),
     Dropout(0.5),
-    Dense(nb_classes, W_constraint=maxnorm(2)),
+    Dense(nb_classes*10, W_constraint=maxnorm(2)),
     Activation('softmax')
+    LinDense(nb_classes)
 ]
 
 # create complete model
