@@ -24,7 +24,7 @@ import scipy.io
 
 batch_size = 100
 nb_classes = 10
-nb_epoch = 1
+nb_epoch = 1667
 
 # input image dimensions
 img_rows, img_cols = 28, 28
