@@ -13,10 +13,11 @@ from keras.datasets import mnist
 from keras.models import Sequential
 from keras.layers.core import Dense, Dropout, Activation
 from keras.layers.scol import LinDense
-from keras.optimizers import SGD, Adam, RMSprop
 from keras.utils import np_utils
 from keras.constraints import maxnorm
+from keras.optimizers import SGD
 
+from six.moves import cPickle
 import scipy.io
 
 batch_size = 100
@@ -51,25 +52,34 @@ model.add(Dense(2048, W_constraint=maxnorm(2)))
 model.add(Activation('relu'))
 model.add(Dropout(0.5))
 
-model.add(Dense(100))
+model.add(Dense(nb_classes*10, W_constraint=maxnorm(2)))
 model.add(Dropout(0.5))
 model.add(Activation('softmax'))
-model.add(LinDense(10))
+model.add(LinDense(nb_classes))
 
 sgd = SGD(lr=0.01, decay=1e-6, momentum=0.95, nesterov=True)
 model.compile(loss='categorical_crossentropy', optimizer=sgd)
 
-model.fit(X_train, Y_train,
-          batch_size=batch_size, nb_epoch=nb_epoch,
-          show_accuracy=True, verbose=2,
-          validation_data=(X_test, Y_test))
-score = model.evaluate(X_test, Y_test,
-                       show_accuracy=True, verbose=2)
+history = model.fit(X_train, Y_train, batch_size=batch_size, nb_epoch=nb_epoch,
+                    show_accuracy=True, verbose=2,
+                    validation_data=(X_test, Y_test))
 
-#model.save_weights('weights_2048x3_200_0.5.h5', overwrite=True)
+score = model.evaluate(X_test, Y_test, show_accuracy=True, verbose=2)
+
+results = []
+results.append(np.asarray(history.history.get('loss')))
+results.append(np.asarray(history.history.get('val_loss')))
+results.append(np.asarray(history.history.get('acc')))
+results.append(np.asarray(history.history.get('val_acc')))
+
+model.save_weights('weights_2048x3_100_050.h5', overwrite=True)
+
+f = open('history_2048x3_100_050.save', 'wb')
+cPickle.dump(results, f, protocol=cPickle.HIGHEST_PROTOCOL)
+f.close()
 
 #prediction = model.predict_classes(X_test, verbose=2)
-#scipy.io.savemat('predictions_2048x3_200_0.5.mat', mdict={'prediction': prediction})
+#scipy.io.savemat('predictions_2048x3_10.mat', mdict={'prediction': prediction})
 
 print('Test score:', score[0])
 print('Test accuracy:', score[1])

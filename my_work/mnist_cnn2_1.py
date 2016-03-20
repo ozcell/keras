@@ -12,14 +12,15 @@ np.random.seed(1337)  # for reproducibility
 
 from keras.datasets import mnist
 from keras.models import Sequential
-from keras.layers.core import Dense, Dropout, Activation, Flatten, LinDense1
+from keras.layers.core import Dense, Dropout, Activation, Flatten
+from keras.layers.scol import LinDense
 from keras.layers.convolutional import Convolution2D, MaxPooling2D
 from keras.utils import np_utils
 from keras.constraints import maxnorm
-from keras.optimizers import SGD, Adam, RMSprop
+from keras.optimizers import SGD
 
+from six.moves import cPickle
 import scipy.io
-
 
 batch_size = 100
 nb_classes = 10
@@ -67,22 +68,33 @@ model.add(Dense(1024, W_constraint=maxnorm(2)))
 model.add(Activation('relu'))
 model.add(Dropout(0.5))
 
-model.add(Dense(100))
+model.add(Dense(100, W_constraint=maxnorm(2)))
 model.add(Activation('softmax'))
-model.add(LinDense1(nb_classes))
+model.add(LinDense(nb_classes))
 
 sgd = SGD(lr=0.01, decay=1e-6, momentum=0.95, nesterov=True)
 model.compile(loss='categorical_crossentropy', optimizer=sgd)
 
-model.fit(X_train, Y_train, batch_size=batch_size, nb_epoch=nb_epoch,
-          show_accuracy=True, verbose=2, validation_data=(X_test, Y_test))
+history = model.fit(X_train, Y_train, batch_size=batch_size, nb_epoch=nb_epoch,
+                    show_accuracy=True, verbose=2,
+                    validation_data=(X_test, Y_test))
 
 score = model.evaluate(X_test, Y_test, show_accuracy=True, verbose=0)
 
-model.save_weights('weights_cnn_1024_100_0.0.h5', overwrite=True)
+results = []
+results.append(np.asarray(history.history.get('loss')))
+results.append(np.asarray(history.history.get('val_loss')))
+results.append(np.asarray(history.history.get('acc')))
+results.append(np.asarray(history.history.get('val_acc')))
+
+model.save_weights('weights_cnn_1024_100_000.h5', overwrite=True)
+
+f = open('history_cnn_1024_100_000.save', 'wb')
+cPickle.dump(results, f, protocol=cPickle.HIGHEST_PROTOCOL)
+f.close()
 
 #prediction = model.predict_classes(X_test, verbose=1)
-#scipy.io.savemat('predictions_cnn_1024_100_0.0.mat', mdict={'prediction': prediction})
+#scipy.io.savemat('predictions_cnn_1024_100_0.50.mat', mdict={'prediction': prediction})
 
 print('Test score:', score[0])
 print('Test accuracy:', score[1])
