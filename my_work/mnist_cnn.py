@@ -64,11 +64,11 @@ model.add(MaxPooling2D(pool_size=(nb_pool, nb_pool)))
 model.add(Dropout(0.25))
 
 model.add(Flatten())
-model.add(Dense(1024, W_constraint=maxnorm(2)))
+model.add(Dense(1024))
 model.add(Activation('relu'))
 model.add(Dropout(0.5))
 
-model.add(Dense(nb_classes, W_constraint=maxnorm(2)))
+model.add(Dense(nb_classes))
 model.add(Activation('softmax'))
 
 sgd = SGD(lr=0.01, decay=1e-6, momentum=0.95, nesterov=True)
@@ -86,9 +86,9 @@ results.append(np.asarray(history.history.get('val_loss')))
 results.append(np.asarray(history.history.get('acc')))
 results.append(np.asarray(history.history.get('val_acc')))
 
-model.save_weights('weights_cnn_1024_10.h5', overwrite=True)
+model.save_weights('weights_cnn_1024_10_no_maxnorm.h5', overwrite=True)
 
-f = open('history_cnn_1024_10.save', 'wb')
+f = open('history_cnn_1024_10_no_maxnorm.save', 'wb')
 cPickle.dump(results, f, protocol=cPickle.HIGHEST_PROTOCOL)
 f.close()
 

@@ -42,17 +42,17 @@ Y_test = np_utils.to_categorical(y_test, nb_classes)
 
 model = Sequential()
 model.add(Dropout(0.2, input_shape=(784,)))
-model.add(Dense(2048, W_constraint=maxnorm(2)))
+model.add(Dense(2048))
 model.add(Activation('relu'))
 model.add(Dropout(0.5))
-model.add(Dense(2048, W_constraint=maxnorm(2)))
+model.add(Dense(2048))
 model.add(Activation('relu'))
 model.add(Dropout(0.5))
-model.add(Dense(2048, W_constraint=maxnorm(2)))
+model.add(Dense(2048))
 model.add(Activation('relu'))
 model.add(Dropout(0.5))
 
-model.add(Dense(nb_classes*10, W_constraint=maxnorm(2)))
+model.add(Dense(nb_classes*10))
 model.add(Activation('softmax'))
 model.add(LinDense(nb_classes))
 
@@ -71,9 +71,9 @@ results.append(np.asarray(history.history.get('val_loss')))
 results.append(np.asarray(history.history.get('acc')))
 results.append(np.asarray(history.history.get('val_acc')))
 
-model.save_weights('weights_2048x3_100_000.h5', overwrite=True)
+model.save_weights('weights_2048x3_100_000_no_maxnorm.h5', overwrite=True)
 
-f = open('history_2048x3_100_000.save', 'wb')
+f = open('history_2048x3_100_000_no_maxnorm.save', 'wb')
 cPickle.dump(results, f, protocol=cPickle.HIGHEST_PROTOCOL)
 f.close()
 
