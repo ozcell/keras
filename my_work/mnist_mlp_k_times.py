@@ -7,7 +7,7 @@ Get to 98.40% test accuracy after 20 epochs
 
 from __future__ import print_function
 import numpy as np
-np.random.seed(1337)  # for reproducibility
+#np.random.seed(1337)  # for reproducibility
 
 from keras.datasets import mnist
 from keras.models import Sequential
