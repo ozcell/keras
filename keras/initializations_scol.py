@@ -7,7 +7,7 @@ def identity_vstacked(shape, scale=1):
     a = np.identity(shape[1])
     for i in range(1, int(1/scale)):
         a = np.vstack((a, np.identity(shape[1])))
-    return K.variable(scale * a)
+    return K.variable(a)
 
 from .utils.generic_utils import get_from_module
 def get(identifier):
