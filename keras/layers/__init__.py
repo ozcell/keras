@@ -9,9 +9,6 @@ from .normalization import *
 from .embeddings import *
 from .noise import *
 from .advanced_activations import *
-<<<<<<< HEAD
 from .scol  import *
-=======
 from .wrappers import *
 from .convolutional_recurrent import *
->>>>>>> fchollet/master
