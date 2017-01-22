@@ -1,6 +1,7 @@
 from __future__ import absolute_import, division
 import numpy as np
 from . import backend as K
+from .utils.generic_utils import get_from_module
 
 def identity_vstacked(shape, scale=1):
     scale = shape[1]/shape[0]
@@ -9,6 +10,5 @@ def identity_vstacked(shape, scale=1):
         a = np.vstack((a, np.identity(shape[1])))
     return K.variable(a)
 
-from .utils.generic_utils import get_from_module
 def get(identifier):
     return get_from_module(identifier, globals(), 'initialization')
