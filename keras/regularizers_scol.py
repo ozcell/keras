@@ -1,7 +1,6 @@
 from __future__ import absolute_import
 from . import backend as K
-from .. import regularizers
-from ..regularizers import Regularizer
+from regularizers import Regularizer
 from .utils.generic_utils import get_from_module
 import warnings
 
