@@ -11,7 +11,7 @@ from six.moves import zip
 from .. import backend as K
 from .. import activations, initializations, initializations_scol, regularizers, constraints
 from ..regularizers import ActivityRegularizer
-from ..layers.core import Layer
+from ..engine import Layer
 
 import marshal
 import types
