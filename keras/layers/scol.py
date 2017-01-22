@@ -91,7 +91,7 @@ class LinDense(Layer):
                  W_regularizer=None, b_regularizer=None, activity_regularizer=None,
                  W_constraint=None, b_constraint=None,
                  bias=True, input_dim=None, **kwargs):
-        self.init = initializations.get(init)
+        self.init = initializations_scol.get(init)
         self.activation = activations.get(activation)
         self.output_dim = output_dim
         self.input_dim = input_dim
