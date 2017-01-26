@@ -37,8 +37,11 @@ class L3L4Regularizer(Regularizer):
         #C = sumN - K.sum(K.theano.tensor.nlinalg.diag(N))
         #D = (size-1)*K.sum(K.theano.tensor.nlinalg.diag(N))
 
-        C = K.sum(K.abs(x_pos_sum - x_pos_sum_mean))
-        D = x_pos_sum_mean * size
+        #C = K.sum(K.abs(x_pos_sum - x_pos_sum_mean))
+        #D = x_pos_sum_mean * size
+
+        C = K.square(x_pos_sum)-K.square(x_pos_sum_mean)
+        D = K.square(x_pos_sum_mean) * size
 
         self.A = A
         self.B = B
