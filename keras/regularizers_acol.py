@@ -24,24 +24,24 @@ class L3L4Regularizer(Regularizer):
 
         x_pos = x * K.cast(x>0., K.floatx())
         x_pos_sum = K.sum(x_pos, axis=0)
-        x_pos_sum_mean = K.mean(x_pos_sum)
+        #x_pos_sum_mean = K.mean(x_pos_sum)
 
         M = K.dot(x_pos.T, x_pos)
-        #N = K.dot(x_pos_sum.reshape((size,1)), x_pos_sum.reshape((1,size)))
+        N = K.dot(x_pos_sum.reshape((size,1)), x_pos_sum.reshape((1,size)))
 
         sumM = K.sum(M)
-        #sumN = K.sum(N)
+        sumN = K.sum(N)
 
-        A = sumM - K.sum(K.theano.tensor.nlinalg.diag(M))
-        B = (size-1)*K.sum(K.theano.tensor.nlinalg.diag(M))
-        #C = sumN - K.sum(K.theano.tensor.nlinalg.diag(N))
-        #D = (size-1)*K.sum(K.theano.tensor.nlinalg.diag(N))
+        A = sumM - K.theano.tensor.nlinalg.trace(M)
+        B = (size-1)*K.theano.tensor.nlinalg.trace(M)
+        C = sumN - K.theano.tensor.nlinalg.trace(N)
+        D = (size-1)*K.theano.tensor.nlinalg.trace(N)
 
         #C = K.sum(K.abs(x_pos_sum - x_pos_sum_mean))
         #D = x_pos_sum_mean * size
 
-        C = K.sum(K.square(x_pos_sum)-K.square(x_pos_sum_mean))
-        D = K.square(x_pos_sum_mean) * size
+        #C = K.sum(K.square(x_pos_sum)-K.square(x_pos_sum_mean))
+        #D = K.square(x_pos_sum_mean) * size
 
         self.A = A
         self.B = B
@@ -54,7 +54,7 @@ class L3L4Regularizer(Regularizer):
         if self.l3:
             regularization += self.l3 * (A/B)
         if self.l4:
-            regularization += self.l4 * (C/D)
+            regularization += self.l4 * (1-(C/D))
 
         return regularization
 
