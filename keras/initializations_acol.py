@@ -7,9 +7,21 @@ def identity_vstacked(shape, scale=1, name=None, dim_ordering='th'):
     scale = shape[1]/shape[0]
     a = np.identity(shape[1])
     for i in range(1, int(1/scale)):
-        a = np.vstack((a, np.identity(shape[1])))
+        a = np.concatenate((a, np.identity(shape[1])),axis=0)
     return K.variable(a, name=name)
+
+def identity_dstacked(shape, scale=1, name=None, dim_ordering='th'):
+    scale = shape[1]/shape[0]
+    a = np.identity(shape[1])
+    for i in range(1, int(1/scale)):
+        a = np.concatenate((a, np.identity(shape[1])),axis=0)
+
+    b = np.expand_dims(np.diag(a[:,0]), axis=2)
+    for i in range(1, shape[1]):
+        c = np.expand_dims(np.diag(a[:,i]), axis=2)
+        b = np.concatenate((b, c),axis=2)
+    return K.variable(b, name=name)
 
 def get(identifier, **kwargs):
     return get_from_module(identifier, globals(),
-                           'initialization', kwargs=kwargs)        
+                           'initialization', kwargs=kwargs)
