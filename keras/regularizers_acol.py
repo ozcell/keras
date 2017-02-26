@@ -28,7 +28,7 @@ class ACOLRegularizer(Regularizer):
         n = K.shape(Z)[1]
 
         Z_bar = Z * K.cast(x>0., K.floatx())
-        v = K.sum(Z_bar, axis=0).reshape(1,n)
+        v = K.sum(Z_bar, axis=0).reshape((1,n))
 
         U = K.dot(Z_bar.T, Z_bar)
         V = K.dot(v.T, v)
