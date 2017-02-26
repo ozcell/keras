@@ -4,80 +4,69 @@ from .regularizers import Regularizer
 from .utils.generic_utils import get_from_module
 import warnings
 
+Tr = K.theano.tensor.nlinalg.trace
 
-class L3L4Regularizer(Regularizer):
-    """Regularizer for L3 and L4 regularization.
+class ACOLRegularizer(Regularizer):
+    """Regularizer for ACOL.
 
     # Arguments
-        l3: Float; L3 regularization factor.
-        l4: Float; L4 regularization factor.
+        c1: Float; affinity factor.
+        c2: Float; balance factor.
+        c3: Float; coactivity factor.
+        c4: Float; L2 regularization factor.
     """
 
-    def __init__(self, l3=0., l4=0.):
-        self.l3 = K.cast_to_floatx(l3)
-        self.l4 = K.cast_to_floatx(l4)
+    def __init__(self, c1=0., c2=0., c3=0., c4=0.):
+        self.c1 = K.variable(c1)
+        self.c2 = K.variable(c2)
+        self.c3 = K.variable(c3)
+        self.c4 = K.variable(c4)
 
     def __call__(self, x):
         regularization = 0
+        Z = x
+        n = K.shape(Z)[1]
 
-        size = K.shape(x)[1]
+        Z_bar = Z * K.cast(x>0., K.floatx())
+        v = K.sum(Z_bar, axis=0).reshape(1,n)
 
-        x_pos = x * K.cast(x>0., K.floatx())
-        x_pos_sum = K.sum(x_pos, axis=0)
-        #x_pos_sum_mean = K.mean(x_pos_sum)
+        U = K.dot(Z_bar.T, Z_bar)
+        V = K.dot(v.T, v)
 
-        M = K.dot(x_pos.T, x_pos)
-        N = K.dot(x_pos_sum.reshape((size,1)), x_pos_sum.reshape((1,size)))
+        affinity = (K.sum(U) - Tr(U))/((n-1)*Tr(U))
+        balance = (K.sum(V) - Tr(V))/((n-1)*Tr(V))
+        coactivity = K.sum(U) - Tr(U)
 
-        sumM = K.sum(M)
-        sumN = K.sum(N)
+        if self.c1:
+            regularization += self.c1 * affinity
+        if self.c2:
+            regularization += self.c2 * (1-balance)
+        if self.c3:
+            regularization += self.c3 * coactivity
+        if self.c4:
+            regularization += K.sum(self.c4 * K.square(Z))
 
-        A = sumM - K.theano.tensor.nlinalg.trace(M)
-        B = (size-1)*K.theano.tensor.nlinalg.trace(M)
-        C = sumN - K.theano.tensor.nlinalg.trace(N)
-        D = (size-1)*K.theano.tensor.nlinalg.trace(N)
-
-        #C = K.sum(K.abs(x_pos_sum - x_pos_sum_mean))
-        #D = x_pos_sum_mean * size
-
-        #C = K.sum(K.square(x_pos_sum)-K.square(x_pos_sum_mean))
-        #D = K.square(x_pos_sum_mean) * size
-
-        self.A = A
-        self.B = B
-        self.C = C
-        self.D = D
-
-        self.similarity = (A/B)
-        self.fullness = (C/D)
-
-        if self.l3:
-            regularization += self.l3 * (A/B)
-        if self.l4:
-            regularization += self.l4 * (1-(C/D))
+        self.affinity = affinity
+        self.balance = balance
+        self.coactivity = coactivity
+        self.reg = regularization
 
         return regularization
 
     def get_config(self):
         return {'name': self.__class__.__name__,
-                'l3': float(self.l3),
-                'l4': float(self.l4)}
-
+                'c1': float(self.c1),
+                'c2': float(self.c2),
+                'c3': float(self.c3),
+                'c4': float(self.c4)}
 
 # Aliases.
 
-ActivityRegularizer = L3L4Regularizer
-
-def activity_l3(l=0.01):
-    return L3L4Regularizer(l3=l)
+ActivityRegularizer = ACOLRegularizer
 
 
-def activity_l4(l=0.01):
-    return L3L4Regularizer(l4=l)
-
-
-def activity_l3l4(l3=0.01, l4=0.01):
-    return L3L4Regularizer(l3=l3, l4=l4)
+def activity_ACOL(c1=1., c2=1., c3=0., c4=0.000001,):
+    return ACOLRegularizer(c1=c1, c2=c2, c3=c3, c4=c4)
 
 
 def get(identifier, kwargs=None):
