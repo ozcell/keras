@@ -3,23 +3,25 @@ import numpy as np
 from . import backend as K
 from .utils.generic_utils import get_from_module
 
-def identity_vstacked(shape, scale=1, name=None, dim_ordering='th', order=0):
+def identity_vstacked(shape, scale=1, name=None, dim_ordering='th'):
     scale = shape[1]/shape[0]
-    if order == 0:
-        a = np.identity(shape[1])
-        for i in range(1, int(1/scale)):
-            a = np.concatenate((a, np.identity(shape[1])),axis=0)
-    else:
+    a = np.identity(shape[1])
+    for i in range(1, int(1/scale)):
+        a = np.concatenate((a, np.identity(shape[1])),axis=0)
+    return K.variable(a, name=name)
+
+def column_vstacked(shape, scale=1, name=None, dim_ordering='th'):
+    scale = shape[1]/shape[0]
+    b = np.zeros(shape[1])
+    b[0] = 1
+    a = np.copy(b)
+    for i in range(1, int(1/scale)):
+        a = np.concatenate((a, b),axis=0)
+    for j in range(1, shape[0]):
         b = np.zeros(shape[1])
-        b[0] = 1
-        a = np.copy(b)
-        for i in range(1, int(1/scale)):
+        b[j] = 1
+        for i in range(0, int(1/scale)):
             a = np.concatenate((a, b),axis=0)
-        for j in range(1, shape[0]):
-            b = np.zeros(shape[1])
-            b[j] = 1
-            for i in range(0, int(1/scale)):
-                a = np.concatenate((a, b),axis=0)
     return K.variable(a, name=name)
 
 def identity_dstacked(shape, scale=1, name=None, dim_ordering='th'):
