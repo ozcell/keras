@@ -17,7 +17,7 @@ def column_vstacked(shape, scale=1, name=None, dim_ordering='th'):
     a = np.copy(b)
     for i in range(1, int(1/scale)):
         a = np.concatenate((a, b),axis=0)
-    for j in range(1, shape[0]):
+    for j in range(1, shape[1]):
         b = np.zeros(shape[1])
         b[j] = 1
         for i in range(0, int(1/scale)):
