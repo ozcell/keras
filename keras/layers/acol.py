@@ -87,7 +87,7 @@ class AveragePooling(Layer):
                  W_regularizer=None, b_regularizer=None, activity_regularizer=None,
                  W_constraint=None, b_constraint=None,
                  bias=False, input_dim=None, trainable=False, order=0, **kwargs):
-        self.init = initializations_acol.get(init(order=order))
+        self.init = initializations_acol.get(init)(order=order)
         self.activation = activations.get(activation)
         self.output_dim = output_dim
         self.input_dim = input_dim
