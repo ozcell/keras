@@ -86,7 +86,7 @@ class AveragePooling(Layer):
                  activation='linear', weights=None,
                  W_regularizer=None, b_regularizer=None, activity_regularizer=None,
                  W_constraint=None, b_constraint=None,
-                 bias=False, input_dim=None, trainable=False, **kwargs):
+                 bias=False, input_dim=None, trainable=False, fake_node = False, **kwargs):
         self.init = initializations_acol.get(init)
         self.activation = activations.get(activation)
         self.output_dim = output_dim
@@ -104,6 +104,7 @@ class AveragePooling(Layer):
         self.input_spec = [InputSpec(ndim='2+')]
 
         self.trainability = trainable
+        self.fake_node = fake_node
 
         if self.input_dim:
             kwargs['input_shape'] = (self.input_dim,)
@@ -123,6 +124,10 @@ class AveragePooling(Layer):
                                  constraint=self.W_constraint)
 
         self.W2 = self.init((input_dim, self.output_dim))
+
+        if self.fake_node:
+            self.W = K.concatenate([self.W, K.zeros((input_dim,1))], axis=1)
+            self.W2 = K.concatenate([self.W2, K.zeros((input_dim,1))], axis=1)
 
         if self.bias:
             self.b = self.add_weight((self.output_dim,),
