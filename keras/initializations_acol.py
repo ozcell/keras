@@ -36,9 +36,6 @@ def column_vstacked_nullnode(shape, scale=1, name=None, dim_ordering='th'):
         b[0,j] = 1
         for i in range(0, int(1/scale)):
             a = np.concatenate((a, b),axis=0)
-    b = np.zeros((1,shape[1]))
-    for i in range(0, int(1/scale)):
-        a = np.concatenate((a, b),axis=0)
     return K.variable(a, name=name)
 
 def identity_dstacked(shape, scale=1, name=None, dim_ordering='th'):
