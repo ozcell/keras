@@ -25,7 +25,7 @@ def column_vstacked(shape, scale=1, name=None, dim_ordering='th'):
     return K.variable(a, name=name)
 
 def column_vstacked_nullnode(shape, scale=1, name=None, dim_ordering='th'):
-    scale = shape[1]-1/shape[0]
+    scale = (shape[1]-1)/shape[0]
     b = np.zeros((1,shape[1]))
     b[0,0] = 1
     a = np.copy(b)
