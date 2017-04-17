@@ -11,12 +11,7 @@ from . import utils
 from . import wrappers
 from . import callbacks
 from . import constraints
-<<<<<<< HEAD
-from . import initializations
-from . import initializations_acol
-=======
 from . import initializers
->>>>>>> fchollet/master
 from . import metrics
 from . import models
 from . import losses
